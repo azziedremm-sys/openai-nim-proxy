@@ -3,6 +3,35 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 
+// ADD THIS: Simple request queue
+class RequestQueue {
+  constructor(concurrency = 1) {
+    this.concurrency = concurrency;
+    this.running = 0;
+    this.queue = [];
+  }
+
+  async add(fn) {
+    while (this.running >= this.concurrency) {
+      await new Promise(resolve => {
+        this.queue.push(resolve);
+      });
+    }
+    
+    this.running++;
+    try {
+      return await fn();
+    } finally {
+      this.running--;
+      const resolve = this.queue.shift();
+      if (resolve) resolve();
+    }
+  }
+}
+
+// Create queue with max 2 concurrent requests
+const requestQueue = new RequestQueue(2);
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
