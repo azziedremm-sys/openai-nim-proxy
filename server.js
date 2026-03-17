@@ -33,7 +33,8 @@ const MODEL_MAPPING = {
   'deepseek-3.2': 'deepseek-ai/deepseek-v3.2',
   'kimi-k2-thinking': 'moonshotai/kimi-k2-thinking',
   'glm5': 'z-ai/glm5',
-  'glm4.7': 'z-ai/glm4.7'
+  'glm4.7': 'z-ai/glm4.7',
+  'llama-3.1-405b': 'meta/llama-3.1-405b-instruct'
 };
 
 // Health check endpoint
