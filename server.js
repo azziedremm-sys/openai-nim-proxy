@@ -35,7 +35,8 @@ const MODEL_MAPPING = {
   'glm5': 'z-ai/glm5',
   'glm4.7': 'z-ai/glm4.7',
   'llama-3.1-405b': 'meta/llama-3.1-405b-instruct',
-  'llama-3.3-70b': 'meta/llama-3.3-70b-instruct'
+  'llama-3.3-70b': 'meta/llama-3.3-70b-instruct',
+  'nemotron-30b': 'nvidia/nemotron-3-nano-30b-a3b'
 };
 
 // Health check endpoint
