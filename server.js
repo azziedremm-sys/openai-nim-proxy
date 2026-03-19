@@ -100,29 +100,22 @@ app.post('/v1/chat/completions', async (req, res) => {
       }
     }
     
-    // Build extra_body with thinking parameters based on model type
-    let extraBody = {};
+    // Build chat_template_kwargs based on model type
+    let chatTemplateKwargs = undefined;
     
     if (nimModel.includes('deepseek')) {
-      // DeepSeek V3.x uses chat_template_kwargs with thinking toggle
-      extraBody = {
-        chat_template_kwargs: { thinking: ENABLE_THINKING_MODE }
-      };
+      // DeepSeek V3.x uses thinking toggle
+      chatTemplateKwargs = { thinking: ENABLE_THINKING_MODE };
     } else if (nimModel.includes('glm')) {
       // GLM models use enable_thinking parameter
-      extraBody = {
-        chat_template_kwargs: {
-          enable_thinking: ENABLE_THINKING_MODE,
-          clear_thinking: false
-        }
+      chatTemplateKwargs = {
+        enable_thinking: ENABLE_THINKING_MODE,
+        clear_thinking: false
       };
     } else if (nimModel.includes('nemotron')) {
       // Nemotron thinking control
-      extraBody = {
-        chat_template_kwargs: { enable_thinking: ENABLE_THINKING_MODE }
-      };
+      chatTemplateKwargs = { enable_thinking: ENABLE_THINKING_MODE };
     }
-    // Note: Llama and most other models don't have thinking modes
     
     // Transform OpenAI request to NIM format
     const nimRequest = {
@@ -130,7 +123,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       messages: messages,
       temperature: temperature || 0.6,
       max_tokens: max_tokens || 9024,
-      extra_body: Object.keys(extraBody).length > 0 ? extraBody : undefined,
+      chat_template_kwargs: chatTemplateKwargs,
       stream: stream || false
     };
     
