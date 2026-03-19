@@ -16,7 +16,7 @@ const NIM_API_BASE = process.env.NIM_API_BASE || 'https://integrate.api.nvidia.c
 const NIM_API_KEY = process.env.NIM_API_KEY;
 
 // 🔥 REASONING DISPLAY TOGGLE - Shows/hides reasoning in output
-const SHOW_REASONING = true; // Set to true to show reasoning with <think> tags
+const SHOW_REASONING = false; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables/disables thinking for models (affects speed!)
 const ENABLE_THINKING_MODE = true; // false = faster but less detailed, true = slower but more detailed
@@ -27,10 +27,10 @@ const MODEL_MAPPING = {
   'gpt-4': 'qwen/qwen3-coder-480b-a35b-instruct',
   'gpt-4-turbo': 'moonshotai/kimi-k2-instruct-0905',
   'deepseek-3.1': 'deepseek-ai/deepseek-v3.1',
+  'deepseek-3.2': 'deepseek-ai/deepseek-v3.2',
   'gpt-oss-120b': 'openai/gpt-oss-120b',
   'gpt-oss-20b': 'openai/gpt-oss-20b',
   'gemini-pro': 'qwen/qwen3-next-80b-a3b-thinking',
-  'deepseek-3.2': 'deepseek-ai/deepseek-v3.2',
   'kimi-k2-thinking': 'moonshotai/kimi-k2-thinking',
   'glm5': 'z-ai/glm5',
   'glm4.7': 'z-ai/glm4.7',
@@ -100,17 +100,17 @@ app.post('/v1/chat/completions', async (req, res) => {
       }
     }
     
-    // Build thinking parameters based on model type
-    let thinkingParams = {};
+    // Build extra_body with thinking parameters based on model type
+    let extraBody = {};
     
-    if (nimModel.includes('deepseek-v3.2') || nimModel.includes('deepseek-v3.1')) {
-      // DeepSeek V3.x thinking control
-      thinkingParams = {
+    if (nimModel.includes('deepseek')) {
+      // DeepSeek V3.x uses chat_template_kwargs with thinking toggle
+      extraBody = {
         chat_template_kwargs: { thinking: ENABLE_THINKING_MODE }
       };
     } else if (nimModel.includes('glm')) {
-      // GLM models thinking control
-      thinkingParams = {
+      // GLM models use enable_thinking parameter
+      extraBody = {
         chat_template_kwargs: {
           enable_thinking: ENABLE_THINKING_MODE,
           clear_thinking: false
@@ -118,7 +118,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       };
     } else if (nimModel.includes('nemotron')) {
       // Nemotron thinking control
-      thinkingParams = {
+      extraBody = {
         chat_template_kwargs: { enable_thinking: ENABLE_THINKING_MODE }
       };
     }
@@ -130,7 +130,7 @@ app.post('/v1/chat/completions', async (req, res) => {
       messages: messages,
       temperature: temperature || 0.6,
       max_tokens: max_tokens || 9024,
-      ...thinkingParams,
+      extra_body: Object.keys(extraBody).length > 0 ? extraBody : undefined,
       stream: stream || false
     };
     
