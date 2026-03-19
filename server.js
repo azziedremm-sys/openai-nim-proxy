@@ -19,7 +19,7 @@ const NIM_API_KEY = process.env.NIM_API_KEY;
 const SHOW_REASONING = true; // Set to true to show reasoning with <think> tags
 
 // 🔥 THINKING MODE TOGGLE - Enables/disables thinking for models (affects speed!)
-const ENABLE_THINKING_MODE = true; // false = faster but less detailed, true = slower but more detailed
+const ENABLE_THINKING_MODE = false; // false = faster but less detailed, true = slower but more detailed
 
 // Model mapping (adjust based on available NIM models)
 const MODEL_MAPPING = {
