@@ -39,7 +39,7 @@ const MODEL_MAPPING = {
   'nemotron-30b': 'nvidia/nemotron-3-nano-30b-a3b',
   'qwen3.5': 'qwen/qwen3.5-397b-a17b',
   'qwen3-next-instruct': 'qwen/qwen3-next-80b-a3b-instruct',
-  'qwen3-next-thinking': 'qwen/qwen3-next-80b-a3b-thinking
+  'qwen3-next-thinking': 'qwen/qwen3-next-80b-a3b-thinking'
 };
 
 // Health check endpoint
