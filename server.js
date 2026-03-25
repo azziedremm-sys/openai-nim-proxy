@@ -37,7 +37,9 @@ const MODEL_MAPPING = {
   'llama-3.1-405b': 'meta/llama-3.1-405b-instruct',
   'llama-3.3-70b': 'meta/llama-3.3-70b-instruct',
   'nemotron-30b': 'nvidia/nemotron-3-nano-30b-a3b',
-  'qwen3.5': 'qwen/qwen3.5-397b-a17b'
+  'qwen3.5': 'qwen/qwen3.5-397b-a17b',
+  'qwen3-next-instruct': 'qwen/qwen3-next-80b-a3b-instruct',
+  'qwen3-next-thinking': 'qwen/qwen3-next-80b-a3b-thinking
 };
 
 // Health check endpoint
